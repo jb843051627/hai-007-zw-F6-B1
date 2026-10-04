@@ -190,7 +190,9 @@ public class TZwArchCardServiceImpl extends ServiceImpl<TZwArchCardMapper, TZwAr
         next.setContent(null);
         next.setDelFlag(0);
         this.baseMapper.insert(next);
-        // 旧版整行一字不改地留在原处备查（连 update_time 都不碰）
+        // 新版录好后，旧版那条退回待核对那一态，免得备查页看到旧痕迹
+        current.setStatus(STATUS_TODO);
+        this.baseMapper.updateById(current);
         return this.baseMapper.selectById(next.getId());
     }
 
